@@ -46,7 +46,6 @@
     </v-toolbar>
     <v-content>
       <Search/>
-      <Result/>
     </v-content>
     <v-navigation-drawer
       temporary
@@ -72,12 +71,11 @@
 
 <script>
 import Search from './components/Search'
-import Result from './components/Result'
 
 export default {
   name: 'App',
   components: {
-    Search, Result
+    Search
   },
   data () {
     return {
