@@ -1,65 +1,65 @@
 <template>
-    <div class="wrapper">
-        <div class="add_area">
-            <div class="add_obj_area">
+    <div class='wrapper'>
+        <div class='add_area'>
+            <div class='add_obj_area'>
                 <dl></dl>
             </div>
-            <div class="add_prop_area">
-                <p>newProp: <input name="new_prop"></p>
+            <div class='add_prop_area'>
+                <p>newProp: <input name='new_prop'></p>
                 <button class='btn_addprop'>add prop</button>
             </div>
         </div>
-        <div class="select_area">
-            <select class="select_json" v-model="selectJson">
-                    <option value="" selected>select json</option>
-                    <option value="all">all</option>
-                    <option value="million">million</option>
-                    <option value="as">as</option>
-                    <option value="test">test</option>
+        <div class='select_area'>
+            <select class='select_json' v-model='selectJson'>
+                    <option value='' selected>select json</option>
+                    <option value='all'>all</option>
+                    <option value='million'>million</option>
+                    <option value='as'>as</option>
+                    <option value='test'>test</option>
             </select>
-            <button class="btn_getjson">get json</button>
+            <button class='btn_getjson'>get json</button>
         </div>
-        <div class="search_area">
-            <select class=greeType v-model="searchGreeType">
-                <option value="" selected>greeType</option>
-                <option value="all">all</option>
-                <option value="Vocal">Vocal</option>
-                <option value="Dance">Dance</option>
-                <option value="Visual">Visual</option>
+        <div class='search_area'>
+            <select class=greeType v-model='searchGreeType'>
+                <option value='' selected>greeType</option>
+                <option value='all'>all</option>
+                <option value='Vocal'>Vocal</option>
+                <option value='Dance'>Dance</option>
+                <option value='Visual'>Visual</option>
             </select>
-            <select class=theaterType v-model="searchTheaterType">
-            <option value="" selected>theaterType</option>
-            <option value="all">all</option>
-            <option value="Princess">Princess</option>
-            <option value="Fairy">Fairy</option>
-            <option value="Angel">Angel</option>
+            <select class=theaterType v-model='searchTheaterType'>
+            <option value='' selected>theaterType</option>
+            <option value='all'>all</option>
+            <option value='Princess'>Princess</option>
+            <option value='Fairy'>Fairy</option>
+            <option value='Angel'>Angel</option>
             </select>
-            <input type="number" placeholder="年齢" class=age v-model="searchAge">
-            <select class=bloodType v-model="searchBloodType">
-                <option value="" selected>bloodType</option>
-                <option value="all">all</option>
-                <option value="A">A</option>
-                <option value="B">B</option>
-                <option value="O">O</option>
-                <option value="AB">AB</option>
+            <input type='number' placeholder='年齢' class=age v-model='searchAge'>
+            <select class=bloodType v-model='searchBloodType'>
+                <option value='' selected>bloodType</option>
+                <option value='all'>all</option>
+                <option value='A'>A</option>
+                <option value='B'>B</option>
+                <option value='O'>O</option>
+                <option value='AB'>AB</option>
             </select>
-            <select class=dominance v-model="searchDominance">
-                <option value="" selected>利き手</option>
-                <option value="all">all</option>
-                <option value="右利き">右利き</option>
-                <option value="左利き">左利き</option>
+            <select class=dominance v-model='searchDominance'>
+                <option value='' selected>利き手</option>
+                <option value='all'>all</option>
+                <option value='右利き'>右利き</option>
+                <option value='左利き'>左利き</option>
             </select>
-            <button class="btn_search" @click="search()">検索</button>
+            <button class='btn_search' @click='search()'>検索</button>
         </div>
-        <div class="json_area">
-            <div class='data_box' v-for="idol in alldata" :key="idol.id">
+        <div class='json_area'>
+            <div class='data_box' v-for='idol in alldata' :key='idol.id'>
                 <div class='tag_area'>
-                    <div class='tag gree'><p>{{ idol.greeType }}</p></div>
-                    <div class='tag theater'><p>{{ idol.theaterType }}</p></div>
+                    <div class='tag gree' :class='idol.greeType'><p>{{ idol.greeType }}</p></div>
+                    <div class='tag theater' :class='idol.theaterType'><p>{{ idol.theaterType }}</p></div>
                 </div>
                 <div class='personal_area'>
                     <div class='main_area'>
-                        <div class='icon'></div>
+                        <div class='icon' :style='{backgroundColor: idol.imageColor}'></div>
                         <p><ruby>{{ idol.name }}<rt>{{ idol.nameRead }}</rt></ruby></p>
                         <p>CV.<ruby>{{ idol.acter }}<rt>{{ idol.acterRead }}</rt></ruby></p>
                     </div>
@@ -423,7 +423,7 @@ export default {
     // },
     init: function(){
         // alldata = data;
-        this.filterdata = this.alldata
+        // this.filterdata = this.alldata
         // createAddArea();
         // display();
         // console.log(filterdata.length);
@@ -475,99 +475,47 @@ export default {
         //     this.addImageColor();
         // }
     },
-    addTagColor: function() {
-        document.querySelectorAll('data_box').each(function(){
-            switch(document.querySelector('gree').textContent) {
-                case 'Vocal':
-                    document.querySelector('gree').classList.add('vocal');
-                    break;
-                case 'Dance':
-                this.querySelector('gree').classList.add('dance');
-                    break;
-                case 'Visual':
-                    this.querySelector('gree').classList.add('visual');
-                    break;
-                default:
-                    break;
-            }
-            switch(document.querySelectorAll('theater').textContent) {
-                case 'Princess':
-                    this.querySelectorAll('theater').classList.add('princess');
-                    break;
-                case 'Fairy':
-                    this.querySelectorAll('theater').classList.add('fairy');
-                    break;
-                case 'Angel':
-                    this.querySelectorAll('theater').classList.add('angel');
-                    break;
-                default:
-                    break;
-            }
-        });
-    },
-    addImageColor: function() {
-        document.querySelectorAll('data_box').each(function(){
-            document.querySelectorAll('icon').setAttribute(
-                'backgroundColor', this.imageColor
-            )
-        });
-    }
   },
   methods: {
-    // changeGreeType: function() {
-    //   this.greeType = this.value;
-    // },
-    // changeTheaterType: function() {
-    //   this.theaterType = this.value;
-    // },
-    // changeAge: function() {
-    //   this.age = this.value;
-    // },
-    // changeBloodType: function() {
-    //   this.bloodType = this.value;
-    // },
-    // ChangeDominance: function() {
-    //   this.dominance = this.value;
-    // },
     search: function() {
-      const alldata = [];
-      const searching = [];
-
-      this.searching = alldata.filter(function(n) {
-          if(this.greeType === undefined || this.greeType === "" || this.greeType === "all"){
-              return n.greeType !== null
-          } else {
-              return n.greeType === this.greeType
-          }
-      });
-      this.searching = searching.filter(function(n) {
-          if(this.theaterType === undefined || this.theaterType === "" || this.theaterType === "all"){
-              return n.theaterType !== null
-          } else {
-              return n.theaterType === this.theaterType
-          }
-      });
-      this.searching = searching.filter(function(n) {
-          if(this.age === undefined || this.age === "all"){
-              return n.age !== null
-          } else {
-              return n.age == this.age
-          }
-      });
-      this.searching = searching.filter(function(n) {
-          if(this.bloodType === undefined || this.bloodType === "" || this.bloodType === "all"){
-              return n.bloodType !== null
-          } else {
-              return n.bloodType === this.bloodType
-          }
-      });
-      this.searching = searching.filter(function(n) {
-          if(this.dominance === undefined || this.dominance === "" || this.dominance === "all"){
-              return n.dominance !== null
-          } else {
-              return n.dominance === this.dominance
-          }
-      });
+        // return this.filterdata = this.alldata.filter((el) => el.greeType === this.searchGreeType);
+        // const alldata = [];
+        let searching = this.alldata
+        searching = this.alldata.filter(function(n) {
+            if(this.searchGreeType === undefined || this.searchGreeType === "" || this.searchGreeType === "all"){
+                return n.greeType !== null
+            } else {
+                return n.greeType === this.searchGreeType
+            }
+        })
+        searching = searching.filter(function(n) {
+            if(this.searchTheaterType === undefined || this.searchTheaterType === "" || this.searchTheaterType === "all"){
+                return n.theaterType !== null
+            } else {
+                return n.theaterType === this.searchTheaterType
+            }
+        })
+        searching = searching.filter(function(n) {
+            if(this.searchAge === undefined || this.searchAge === "all"){
+                return n.age !== null
+            } else {
+                return n.age == this.searchAge
+            }
+        })
+        searching = searching.filter(function(n) {
+            if(this.searchBloodType === undefined || this.searchBloodType === "" || this.searchBloodType === "all"){
+                return n.bloodType !== null
+            } else {
+                return n.bloodType === this.searchBloodType
+            }
+        })
+        searching = searching.filter(function(n) {
+            if(this.searchDominance === undefined || this.searchDominance === "" || this.searchDominance === "all"){
+                return n.dominance !== null
+            } else {
+                return n.dominance === this.searchDominance
+            }
+        })
 
     //   console.log(greeType);
     //   console.log(theaterType);
@@ -578,7 +526,7 @@ export default {
     //   console.log(searching.length);
 
       this.filterdata = searching;
-      this.display();
+    //   this.display();
     }
   }
 }
@@ -618,13 +566,13 @@ body {
     border-right: 1px solid #ccc;
 }
 
-.vocal, .princess {
+.Vocal, .Princess {
     background-color: pink;
 }
-.dance, .fairy {
+.Dance, .Fairy {
     background-color: cornflowerblue;
 }
-.visual, .angel {
+.Visual, .Angel {
     background-color: yellow;
 }
 
@@ -673,7 +621,6 @@ body {
     height: 100px;
     margin: 0 auto 10px;
     border-radius: 50%;
-    background-color: pink;
 }
 
 .side_area {
