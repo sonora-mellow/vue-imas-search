@@ -22,14 +22,12 @@
         <div class='search_area'>
             <select class=greeType v-model='searchGreeType'>
                 <option value='' selected>greeType</option>
-                <option value='all'>all</option>
                 <option value='Vocal'>Vocal</option>
                 <option value='Dance'>Dance</option>
                 <option value='Visual'>Visual</option>
             </select>
             <select class=theaterType v-model='searchTheaterType'>
             <option value='' selected>theaterType</option>
-            <option value='all'>all</option>
             <option value='Princess'>Princess</option>
             <option value='Fairy'>Fairy</option>
             <option value='Angel'>Angel</option>
@@ -37,7 +35,6 @@
             <input type='number' placeholder='年齢' class=age v-model='searchAge'>
             <select class=bloodType v-model='searchBloodType'>
                 <option value='' selected>bloodType</option>
-                <option value='all'>all</option>
                 <option value='A'>A</option>
                 <option value='B'>B</option>
                 <option value='O'>O</option>
@@ -45,25 +42,16 @@
             </select>
             <select class=dominance v-model='searchDominance'>
                 <option value='' selected>利き手</option>
-                <option value='all'>all</option>
                 <option value='右利き'>右利き</option>
                 <option value='左利き'>左利き</option>
             </select>
-            <button class='btn_search'  @click='searchResult'>検索</button>
+            <button class='btn_search' @click='search'>検索</button>
         </div>
-
-
-        <div class='search_area'>
-            <p>{{ searchGreeType}}</p>
-            <p>{{ searchTheaterType}}</p>
-            <p>{{ searchAge }}</p>
-            <p>{{ searchBloodType }}</p>
-            <p>{{ searchDominance }}</p>
-        </div>
-
-
         <div class='json_area'>
-            <div v-for='idol in filterdata' :key='idol.id'>
+            <div v-if='filterdata.length == 0' class='data_box'>
+                <p>該当データはありません</p>
+            </div>
+            <div v-else v-for='idol in filterdata' :key='idol.id'>
                 <IdolList
                     :key='idol.id'
                     :id='idol.id'
@@ -97,13 +85,12 @@
 // import idols from '../json/'
 import IdolList from './IdolList';
 const _ = require('lodash');
-
 export default {
   name: 'Search',
   components: {
         IdolList
   },
-  data() {
+  data: function() {
     return {
         alldata: [
             {
@@ -424,7 +411,8 @@ export default {
         searchTheaterType: '',
         searchAge: '',
         searchBloodType: '',
-        searchDominance: ''
+        searchDominance: '',
+        filterdata: ''
     }
   },
   created: {
@@ -439,154 +427,32 @@ export default {
     //     req.send(null);					    // 実際にサーバーへリクエストを送信
     // },
     init: function(){
+        // this.filterdata = this.alldata;
         // alldata = data;
         // createAddArea();
         // display();
         // console.log(filterdata.length);
         // console.log(Object.keys(filterdata[0]).length);
         // console.log(Object.keys(filterdata[0])[1]);
-    },
-    display: function(){
-        // $json_area.empty();
-        // const json_area = document.getElementById('json_area');
-        // const alldata = alldata;
-        // const filterdata = alldata;
-
-        // json_area.innerHTML += this.msg
-
-        // if(filterdata.length == 0){
-        //       json_area.innerHTML += 
-        //         "<div class='data_box'>" +
-        //             "<p>該当データはありません</p>" +
-        //         "</div>"
-        // } else {
-        //     for(let i=0; i<filterdata.length; i++){
-        //         json_area.innerHTML += 
-        //         "<div class='data_box'>" +
-        //             "<div class='tag_area'>" +
-        //                 "<div class='tag gree'><p>" + filterdata[i].greeType + "</p></div>" +
-        //                 "<div class='tag theater'><p>" + filterdata[i].theaterType + "</p></div>" +
-        //             "</div>" +
-        //             "<div class='personal_area'>" +
-        //                 "<div class='main_area'>" +
-        //                     "<div class='icon'></div>" +
-        //                     "<p><ruby>" + filterdata[i].name + "<rt>" + filterdata[i].nameRead +  "</rt></ruby></p>" +
-        //                     "<p>" + "CV.<ruby>" + filterdata[i].acter + "<rt>" + filterdata[i].acterRead +  "</rt></ruby></p>" +
-        //                 "</div>" +
-        //                 "<div class='side_area'>" +
-        //                     "<p>" + filterdata[i].birthPlace + "出身" + filterdata[i].birthMonth + "/" + filterdata[i].birthDay + "生まれ" + filterdata[i].age + "歳</p>" +
-        //                     "<p>" + filterdata[i].bloodType + "型</p>" +
-        //                     "<p>" + filterdata[i].dominance + "</p>" +
-        //                     "<p>" + filterdata[i].b + '/' + filterdata[i].w + '/' + filterdata[i].h +  "</p>" +
-        //                     "<dl>" +
-        //                         "<dt>趣味:</dt><dd>" + filterdata[i].hobby + "</dd>" +
-        //                         "<dt>特技:</dt><dd>" + filterdata[i].skill + "</dd>" +
-        //                         "<dt>好きなこと:</dt><dd>" + filterdata[i].like + "</dd>" +
-        //                     "</dl>" +
-        //                 "</div>" +
-        //             "</div>" +
-        //         "</div>";
-        //     }
-        //     this.addTagColor();
-        //     this.addImageColor();
-        // }
-    },
+    }
   },
-//   watch: {
-//       changeGreeType: function{}
-//   },
+  mounted: {
+    init: function(){
+        this.filterdata  = this.alldata;
+    }
+  },
   methods: {
-    changeGreeType: function (searchGreeType) {
-        let isSelected = this.searchGreeType;
-        if(!isSelected) {
-        this.filterdata.push(searchGreeType);
-        }else{
-        let searching = _.reject(this.filterdata, function(el){
-            return el === searchGreeType;
-        });
-        this.fileterdata = searching;
-        }
-    },
-    searchResult: function() {
-        _.filter(this.alldata, {'greeType': this.searchGreeType});
-    },
-    includes: function (searchGreeType) {
-        return _.includes(this.filterdata, searchGreeType);
-    },
-    // includesAll: function (greeTypes) {
-    //     //console.log(types);
-    //     var matched = true;
-
-    //     this.filterdata.forEach(function(selected) {
-    //     var found = greeTypes.some(function(greeType){
-    //         return greeType === selected;
-    //     });
-    //     if(!found) {
-    //         matched = false;
-    //     }
-    //     });
-    //     return matched;
-    // },
-
     search: function() {
-        // return this.filterdata = this.alldata.filter((el) => {el.match(this.searchGreeType)});
-
-        // return this.filterdata = this.alldata.filter((el) => el.greeType === this.searchGreeType);
-        // const alldata = [];
-        // let searching = this.alldata
-        // searching = this.alldata.filter(function(n) {
-        //     if(this.searchGreeType === "" || this.searchGreeType === "all"){
-        //         return n.greeType !== null
-        //     } else {
-        //         return n.greeType === this.searchGreeType
-        //     }
-        // })
-        // searching = searching.filter(function(n) {
-        //     if(this.searchTheaterType === undefined || this.searchTheaterType === "" || this.searchTheaterType === "all"){
-        //         return n.theaterType !== null
-        //     } else {
-        //         return n.theaterType === this.searchTheaterType
-        //     }
-        // })
-        // searching = searching.filter(function(n) {
-        //     if(this.searchAge === undefined || this.searchAge === "all"){
-        //         return n.age !== null
-        //     } else {
-        //         return n.age == this.searchAge
-        //     }
-        // })
-        // searching = searching.filter(function(n) {
-        //     if(this.searchBloodType === undefined || this.searchBloodType === "" || this.searchBloodType === "all"){
-        //         return n.bloodType !== null
-        //     } else {
-        //         return n.bloodType === this.searchBloodType
-        //     }
-        // })
-        // searching = searching.filter(function(n) {
-        //     if(this.searchDominance === undefined || this.searchDominance === "" || this.searchDominance === "all"){
-        //         return n.dominance !== null
-        //     } else {
-        //         return n.dominance === this.searchDominance
-        //     }
-        // })
-
-    //   console.log(greeType);
-    //   console.log(theaterType);
-    //   console.log(age);
-    //   console.log(bloodType);
-    //   console.log(dominance);
-    //   console.log(searching);
-    //   console.log(searching.length);
-
-    //   this.filterdata = searching;
-    //   this.display();
+        this.$nextTick(function() {
+            this.filterdata = _.intersection(this.filterGreeType,this.filterTheaterType,this.filterAge,this.filterBloodType,this.filterDominance);
+        });
     }
   },
   computed: {
-    searching: function() {
-
-    },
-    filterdata: function() {
+    // filterdata: function() {
+    //     return this.alldata;
+    // },
+    filterGreeType: function() {
         if(!this.searchGreeType == '') {
             return this.alldata.filter(function(el){
                 return el.greeType === this.searchGreeType
@@ -594,15 +460,17 @@ export default {
         } else {
             return this.alldata;
         }
-
+    },
+    filterTheaterType: function() {
         if(!this.searchTheaterType == '') {
             return this.alldata.filter(function(el){
-                return el.theaterType === this.searchTheterType
+                return el.theaterType === this.searchTheaterType
             }, this);
         } else {
             return this.alldata;
         }
-
+    },
+    filtercAge: function() {
         if(!this.searchAge == null) {
             return this.alldata.filter(function(el){
                 return el.age === this.searchAge
@@ -610,7 +478,8 @@ export default {
         } else {
             return this.alldata;
         }
-
+    },
+    filterBloodType: function() {
         if(!this.searchBloodType == '') {
             return this.alldata.filter(function(el){
                 return el.bloodType === this.searchBloodType
@@ -618,7 +487,8 @@ export default {
         } else {
             return this.alldata;
         }
-
+    },
+    filterDominance: function() {
         if(!this.searchDominance == '') {
             return this.alldata.filter(function(el){
                 return el.dominance === this.searchDominance
@@ -626,16 +496,6 @@ export default {
         } else {
             return this.alldata;
         }
-
-        // const isSelected = this.includes(searchGreeType);
-        // if(!isSelected) {
-        // this.filterdata.push(searchGreeType);
-        // }else{
-        // const searching = _.reject(this.filterdata, function(el){
-        //     return el === searchGreeType;
-        // });
-        // this.fileterdata = searching;
-        // }
     }
   }
 }
@@ -644,20 +504,16 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 @charset "utf-8";
-
 body,p,ul,h1,h2,h3,h4,h5 {
     margin: 0;
     padding: 0;
 }
-
 body {
     max-width: 720px;
     margin: 0 auto;
     font-family: 'M PLUS 1p', sans-serif;
 }
-
 .select_area, .search_area {
     margin-bottom: 20px;
 }
-
 </style>
