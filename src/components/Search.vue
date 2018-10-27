@@ -409,10 +409,9 @@ export default {
         selectJson: '',
         searchGreeType: '',
         searchTheaterType: '',
-        searchAge: '',
+        searchAge: null,
         searchBloodType: '',
-        searchDominance: '',
-        filterdata: ''
+        searchDominance: ''
     }
   },
   created: {
@@ -437,21 +436,11 @@ export default {
     }
   },
   mounted: {
-    init: function(){
-        this.filterdata  = this.alldata;
-    }
-  },
-  methods: {
-    search: function() {
-        this.$nextTick(function() {
-            this.filterdata = _.intersection(this.filterGreeType,this.filterTheaterType,this.filterAge,this.filterBloodType,this.filterDominance);
-        });
-    }
+    // init: function(){
+    //     this.filterdata  = this.alldata;
+    // }
   },
   computed: {
-    // filterdata: function() {
-    //     return this.alldata;
-    // },
     filterGreeType: function() {
         if(!this.searchGreeType == '') {
             return this.alldata.filter(function(el){
@@ -470,7 +459,7 @@ export default {
             return this.alldata;
         }
     },
-    filtercAge: function() {
+    filterAge: function() {
         if(!this.searchAge == null) {
             return this.alldata.filter(function(el){
                 return el.age === this.searchAge
@@ -496,6 +485,19 @@ export default {
         } else {
             return this.alldata;
         }
+    },
+    filterdata: function() {
+        return _.intersection(this.alldata,this.filterGreeType,this.filterTheaterType,this.filterAge,this.filterBloodType,this.filterDominance);
+    }
+    // filterdata: function() {
+    //     return _.intersection(this.alldata,this.filterGreeType,this.filterTheaterType);
+    // }
+  },
+  methods: {
+    search: function() {
+        this.$nextTick(function() {
+            this.filterdata = _.intersection(this.filterGreeType,this.filterTheaterType,this.filterAge,this.filterBloodType,this.filterDominance);
+        });
     }
   }
 }
