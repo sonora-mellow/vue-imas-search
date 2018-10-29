@@ -1,6 +1,6 @@
 <template>
     <div class='wrapper'>
-        <div class='add_area'>
+        <!-- <div class='add_area'>
             <div class='add_obj_area'>
                 <dl></dl>
             </div>
@@ -8,7 +8,7 @@
                 <p>newProp: <input name='new_prop'></p>
                 <button class='btn_addprop'>add prop</button>
             </div>
-        </div>
+        </div> -->
         <div class='select_area'>
             <select class='select_json' v-model='selectJson'>
                     <option value='' selected>select json</option>
@@ -32,7 +32,6 @@
             <option value='Fairy'>Fairy</option>
             <option value='Angel'>Angel</option>
             </select>
-            <input type='number' placeholder='年齢' class=age v-model='searchAge'>
             <select class=bloodType v-model='searchBloodType'>
                 <option value='' selected>bloodType</option>
                 <option value='A'>A</option>
@@ -45,7 +44,6 @@
                 <option value='右利き'>右利き</option>
                 <option value='左利き'>左利き</option>
             </select>
-            <button class='btn_search' @click='search'>検索</button>
         </div>
         <div class='json_area'>
             <div v-if='filterdata.length == 0' class='data_box'>
@@ -82,8 +80,9 @@
     </div>
 </template>
 <script>
-// import idols from '../json/'
+// import axios from 'axios';
 import IdolList from './IdolList';
+
 const _ = require('lodash');
 export default {
   name: 'Search',
@@ -406,6 +405,8 @@ export default {
                 like: "おにぎり、いちごババロア"
             }
         ],
+        // loading: true,
+        // errored: false,
         selectJson: '',
         searchGreeType: '',
         searchTheaterType: '',
@@ -414,18 +415,38 @@ export default {
         searchDominance: ''
     }
   },
-  created: {
-    // getJSON(){
-    //     const req = new XMLHttpRequest();		  // XMLHttpRequestオブジェクトを生成する
-    //     req.onreadystatechange = function() {		  // XMLHttpRequestオブジェクトの状態が変化した際に呼び出されるイベントハンドラ
-    //         if(req.readyState == 4 && req.status == 200){ // サーバーからのレスポンスが完了し、かつ、通信が正常に終了した場合
-    //         alert(req.responseText);		          // 取得した JSON ファイルの中身を表示
-    //         }
-    //     };
-    //     req.open("GET", "million.json", false); // HTTPメソッドとアクセスするサーバーのURLを指定
-    //     req.send(null);					    // 実際にサーバーへリクエストを送信
+  beforeCreate: {
+    // init: function(){
+    //     const million = '/json/million.json';
+    //     const data = require(million);
+    //     this.alldata = data.data;
     // },
-    init: function(){
+
+    // init: function(){
+    //     axios
+    //         .get('../json/million.json')
+    //         .then(response => {
+    //             this.alldata = response.data;
+    //         })
+    //         .catch(error => {
+    //             /* eslint-disable no-console */
+    //             console.log(error);
+    //             this.errored = true
+    //         })
+    //         .finally(() => this.loading = false)
+    //     }
+
+        // getJSON(){
+        // const req = new XMLHttpRequest();		  // XMLHttpRequestオブジェクトを生成する
+        // req.onreadystatechange = function() {		  // XMLHttpRequestオブジェクトの状態が変化した際に呼び出されるイベントハンドラ
+        //     if(req.readyState == 4 && req.status == 200){ // サーバーからのレスポンスが完了し、かつ、通信が正常に終了した場合
+        //     alert(req.responseText);		          // 取得した JSON ファイルの中身を表示
+        //     }
+        // };
+        // req.open("GET", "million.json", false); // HTTPメソッドとアクセスするサーバーのURLを指定
+        // req.send(null);					    // 実際にサーバーへリクエストを送信
+        // }
+    // init: function(){
         // this.filterdata = this.alldata;
         // alldata = data;
         // createAddArea();
@@ -433,11 +454,6 @@ export default {
         // console.log(filterdata.length);
         // console.log(Object.keys(filterdata[0]).length);
         // console.log(Object.keys(filterdata[0])[1]);
-    }
-  },
-  mounted: {
-    // init: function(){
-    //     this.filterdata  = this.alldata;
     // }
   },
   computed: {
@@ -489,16 +505,8 @@ export default {
     filterdata: function() {
         return _.intersection(this.alldata,this.filterGreeType,this.filterTheaterType,this.filterAge,this.filterBloodType,this.filterDominance);
     }
-    // filterdata: function() {
-    //     return _.intersection(this.alldata,this.filterGreeType,this.filterTheaterType);
-    // }
   },
   methods: {
-    search: function() {
-        this.$nextTick(function() {
-            this.filterdata = _.intersection(this.filterGreeType,this.filterTheaterType,this.filterAge,this.filterBloodType,this.filterDominance);
-        });
-    }
   }
 }
 </script>
@@ -517,5 +525,10 @@ body {
 }
 .select_area, .search_area {
     margin-bottom: 20px;
+}
+.search_area select {
+    margin-right: 10px;
+    padding: 3px 10px;
+    border: 1px solid #ccc;
 }
 </style>

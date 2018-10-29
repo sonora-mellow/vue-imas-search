@@ -125,15 +125,9 @@ export default {
 <style scoped>
 @charset "utf-8";
 
-body,p,ul,h1,h2,h3,h4,h5 {
+p,ul,h1,h2,h3,h4,h5 {
     margin: 0;
     padding: 0;
-}
-
-body {
-    max-width: 720px;
-    margin: 0 auto;
-    font-family: 'M PLUS 1p', sans-serif;
 }
 
 .data_box {
