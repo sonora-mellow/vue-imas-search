@@ -45,6 +45,10 @@
                 <option value='左利き'>左利き</option>
             </select>
         </div>
+        <div>
+            {{ jsondata }}
+            {{ errors }}
+        </div>
         <div class='json_area'>
             <div v-if='filterdata.length == 0' class='data_box'>
                 <p>該当データはありません</p>
@@ -80,10 +84,11 @@
     </div>
 </template>
 <script>
-// import axios from 'axios';
-import IdolList from './IdolList';
+import IdolList from './IdolList'
+import axios from 'axios'
 
 const _ = require('lodash');
+
 export default {
   name: 'Search',
   components: {
@@ -405,8 +410,8 @@ export default {
                 like: "おにぎり、いちごババロア"
             }
         ],
-        // loading: true,
-        // errored: false,
+        jsondata: [],
+        errors: [],
         selectJson: '',
         searchGreeType: '',
         searchTheaterType: '',
@@ -416,45 +421,17 @@ export default {
     }
   },
   beforeCreate: {
-    // init: function(){
-    //     const million = '/json/million.json';
-    //     const data = require(million);
-    //     this.alldata = data.data;
-    // },
-
-    // init: function(){
-    //     axios
-    //         .get('../json/million.json')
-    //         .then(response => {
-    //             this.alldata = response.data;
-    //         })
-    //         .catch(error => {
-    //             /* eslint-disable no-console */
-    //             console.log(error);
-    //             this.errored = true
-    //         })
-    //         .finally(() => this.loading = false)
-    //     }
-
-        // getJSON(){
-        // const req = new XMLHttpRequest();		  // XMLHttpRequestオブジェクトを生成する
-        // req.onreadystatechange = function() {		  // XMLHttpRequestオブジェクトの状態が変化した際に呼び出されるイベントハンドラ
-        //     if(req.readyState == 4 && req.status == 200){ // サーバーからのレスポンスが完了し、かつ、通信が正常に終了した場合
-        //     alert(req.responseText);		          // 取得した JSON ファイルの中身を表示
-        //     }
-        // };
-        // req.open("GET", "million.json", false); // HTTPメソッドとアクセスするサーバーのURLを指定
-        // req.send(null);					    // 実際にサーバーへリクエストを送信
-        // }
-    // init: function(){
-        // this.filterdata = this.alldata;
-        // alldata = data;
-        // createAddArea();
-        // display();
-        // console.log(filterdata.length);
-        // console.log(Object.keys(filterdata[0]).length);
-        // console.log(Object.keys(filterdata[0])[1]);
-    // }
+    init: function() {
+      axios.get("../json/million.json")
+        .then(response => {
+            this.jsondata.push(response.data);
+            //console.log(response);
+        })
+        .catch(error => {
+            this.errors.push(error);
+            //console.log(error);
+        });  
+    }
   },
   computed: {
     filterGreeType: function() {
