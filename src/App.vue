@@ -10,7 +10,7 @@
       <Search/>
     </v-content>
     <v-footer :fixed="fixed" app>
-      <span>&copy;2018 sonora-mellow</span>
+      <span>&copy;2019 sonora-mellow</span>
     </v-footer>
   </v-app>
 </template>
