@@ -1,23 +1,13 @@
 <template>
     <div class='wrapper'>
-        <!-- <div class='add_area'>
-            <div class='add_obj_area'>
-                <dl></dl>
-            </div>
-            <div class='add_prop_area'>
-                <p>newProp: <input name='new_prop'></p>
-                <button class='btn_addprop'>add prop</button>
-            </div>
-        </div> -->
         <div class='select_area'>
-            <select class='select_json' v-model='selectJson'>
+            <select class='selectJson' v-model='selectJson'>
                     <option value='' selected>select json</option>
                     <option value='all'>all</option>
                     <option value='million'>million</option>
                     <option value='as'>as</option>
-                    <option value='test'>test</option>
+                    <option value='shiny'>shiny</option>
             </select>
-            <button class='btn_getjson'>get json</button>
         </div>
         <div class='search_area'>
             <select class=greeType v-model='searchGreeType'>
@@ -44,10 +34,6 @@
                 <option value='右利き'>右利き</option>
                 <option value='左利き'>左利き</option>
             </select>
-        </div>
-        <div>
-            {{ jsondata }}
-            {{ errors }}
         </div>
         <div class='json_area'>
             <div v-if='filterdata.length == 0' class='data_box'>
@@ -500,10 +486,14 @@ body {
     margin: 0 auto;
     font-family: 'M PLUS 1p', sans-serif;
 }
-.select_area, .search_area {
+.select_area {
+    margin-top: 20px;
+}
+.search_area {
+    margin-top: 20px;
     margin-bottom: 20px;
 }
-.search_area select {
+.select_area select, .search_area select {
     margin-right: 10px;
     padding: 3px 10px;
     border: 1px solid #ccc;
