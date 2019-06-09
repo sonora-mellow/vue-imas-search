@@ -80,10 +80,13 @@
 </template>
 <script>
 import IdolList from './IdolList'
-const as = require("../assets/json/as.json").as;
-const million = require("../assets/json/million.json").million;
-const shiny = require("../assets/json/shiny.json").shiny;
-const all = million;
+import as from '../assets/json/as.json'
+import million from '../assets/json/million.json'
+import shiny from '../assets/json/shiny.json'
+
+// const as = require("../assets/json/as.json").as;
+// const million = require("../assets/json/million.json").million;
+// const shiny = require("../assets/json/shiny.json").shiny;
 
 const _ = require('lodash');
 
@@ -95,6 +98,9 @@ export default {
   data: function() {
     return {
         alldata: null,
+        as: as,
+        million: million,
+        shiny: shiny,
         selectJson: '',
         searchGreeType: '',
         searchTheaterType: '',
@@ -104,7 +110,7 @@ export default {
     }
   },
   mounted() {
-    this.alldata = all;
+    this.alldata = as.as;
   },
   computed: {
     /* eslint-disable */
@@ -113,11 +119,11 @@ export default {
             case '':
                 return this.alldata = all;
             case 'as':
-                return this.alldata = as;
+                return this.alldata = as.as;
             case 'million':
-                return this.alldata = million;
+                return this.alldata = million.million;
             case 'shiny':
-                return this.alldata = shiny;
+                return this.alldata = shiny.shiny;
         }
     },
     /* eslint-disable */
