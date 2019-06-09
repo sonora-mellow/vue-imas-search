@@ -36,42 +36,54 @@
             </select>
         </div>
         <div class='json_area'>
-            <div v-if='filterdata.length == 0' class='data_box'>
-                <p>該当データはありません</p>
+            <div v-if='errored' class='data_box'>
+                <p>DataLoad Error</p>
             </div>
-            <div v-else v-for='idol in filterdata' :key='idol.id'>
-                <IdolList
-                    :key='idol.id'
-                    :id='idol.id'
-                    :greeType='idol.greeType'
-                    :theaterType='idol.theaterType'
-                    :name='idol.name'
-                    :nameRead='idol.nameRead'
-                    :acter='idol.acter'
-                    :acterRead='idol.acterRead'
-                    :imageColor='idol.imageColor'
-                    :age='idol.age'
-                    :height='idol.height'
-                    :weight='idol.weight'
-                    :birthPlace='idol.birthPlace'
-                    :birthMonth='idol.birthMonth'
-                    :birthDay='idol.birthDay'
-                    :bloodType='idol.bloodType'
-                    :dominance='idol.dominance'
-                    :b='idol.b'
-                    :w='idol.w'
-                    :h='idol.h'
-                    :hobby='idol.hobby'
-                    :skill='idol.skill'
-                    :like='idol.like'
-                ></IdolList>
+
+            <div v-else>
+                <div v-if="loading">Loading...</div>
+                {{ axiosdata }}
+
+                <div v-if='filterdata.length == 0' class='data_box'>
+                    <p>該当データはありません</p>
+                </div>
+                <div v-else v-for='idol in filterdata' :key='idol.id'>
+                    <IdolList
+                        :key='idol.id'
+                        :id='idol.id'
+                        :greeType='idol.greeType'
+                        :theaterType='idol.theaterType'
+                        :name='idol.name'
+                        :nameRead='idol.nameRead'
+                        :acter='idol.acter'
+                        :acterRead='idol.acterRead'
+                        :imageColor='idol.imageColor'
+                        :age='idol.age'
+                        :height='idol.height'
+                        :weight='idol.weight'
+                        :birthPlace='idol.birthPlace'
+                        :birthMonth='idol.birthMonth'
+                        :birthDay='idol.birthDay'
+                        :bloodType='idol.bloodType'
+                        :dominance='idol.dominance'
+                        :b='idol.b'
+                        :w='idol.w'
+                        :h='idol.h'
+                        :hobby='idol.hobby'
+                        :skill='idol.skill'
+                        :like='idol.like'
+                    ></IdolList>
+                </div>
             </div>
         </div>
     </div>
 </template>
 <script>
 import IdolList from './IdolList'
-import axios from 'axios'
+const as = require("../assets/json/as.json").as;
+const million = require("../assets/json/million.json").million;
+const shiny = require("../assets/json/shiny.json").shiny;
+const all = million;
 
 const _ = require('lodash');
 
@@ -82,322 +94,7 @@ export default {
   },
   data: function() {
     return {
-        alldata: [
-            {
-                id: 1,
-                greeType: "Vocal",
-                theaterType: "Princess",
-                name: "天海 春香",
-                nameRead: "あまみ はるか",
-                acter: "中村 繪里子",
-                acterRead: "なかむら えりこ",
-                imageColor: "#e22b30",
-                age: 17,
-                height: 158,
-                weight: 46,
-                birthPlace: "神奈川県",
-                birthMonth: 4,
-                birthDay: 3,
-                bloodType: "O",
-                dominance: "右利き",
-                b: 83,
-                w: 56,
-                h: 82,
-                hobby: "カラオケ、長電話",
-                skill: "お菓子作り",
-                like: "歌うこと"
-            },
-            {
-                id: 2,
-                greeType: "Vocal",
-                theaterType: "Fairy",
-                name: "如月 千早",
-                nameRead: "きさらぎ ちはや",
-                acter: "今井 麻美",
-                acterRead: "いまい あさみ",
-                imageColor: "#2743d2",
-                age: 16,
-                height: 162,
-                weight: 41,
-                birthPlace: "東京都",
-                birthMonth: 2,
-                birthDay: 25,
-                bloodType: "A",
-                dominance: "右利き",
-                b: 72,
-                w: 55,
-                h: 78,
-                hobby: "音楽鑑賞",
-                skill: "歌",
-                like: "トレーニング"
-            },
-            {
-                id: 3,
-                greeType: "Vocal",
-                theaterType: "Fairy",
-                name: "四条 貴音",
-                nameRead: "しじょう たかね",
-                acter: "原 由実",
-                acterRead: "はら ゆみ",
-                imageColor: "#a6126a",
-                age: 18,
-                height: 169,
-                weight: 49,
-                birthPlace: "京都府？",
-                birthMonth: 1,
-                birthDay: 21,
-                bloodType: "B",
-                dominance: "右利き",
-                b: 90,
-                w: 62,
-                h: 92,
-                hobby: "天体観測、歴史",
-                skill: "直感",
-                like: "ラーメン"
-            },
-            {
-                id: 4,
-                greeType: "Vocal",
-                theaterType: "Angel",
-                name: "三浦 あずさ",
-                nameRead: "みうら あずさ",
-                acter: "たかはし 智秋",
-                acterRead: "たかはし ちあき",
-                imageColor: "#9238be",
-                age: 21,
-                height: 168,
-                weight: 48,
-                birthPlace: "千葉県",
-                birthMonth: 7,
-                birthDay: 19,
-                bloodType: "O",
-                dominance: "右利き",
-                b: 91,
-                w: 59,
-                h: 86,
-                hobby: "犬の散歩",
-                skill: "占い",
-                like: "カフェ巡り"
-            },
-            {
-                id: 5,
-                greeType: "Vocal",
-                theaterType: "Fairy",
-                name: "水瀬 伊織",
-                nameRead: "みなせ いおり",
-                acter: "釘宮 理恵",
-                acterRead: "くぎみや りえ",
-                imageColor: "#fd99e1",
-                age: 15,
-                height: 153,
-                weight: 40,
-                birthPlace: "東京都",
-                birthMonth: 5,
-                birthDay: 5,
-                bloodType: "AB",
-                dominance: "右利き",
-                b: 77,
-                w: 54,
-                h: 79,
-                hobby: "海外旅行、食べ歩き",
-                skill: "ショッピング",
-                like: "果汁100%オレンジジュース"
-            },
-            {
-                id: 6,
-                greeType: "Dance",
-                theaterType: "Princess",
-                name: "我那覇 響",
-                nameRead: "がなは ひびき",
-                acter: "沼倉 愛美",
-                acterRead: "ぬまくら まなみ",
-                imageColor: "#01adb9",
-                age: 16,
-                height: 152,
-                weight: 41,
-                birthPlace: "沖縄県",
-                birthMonth: 10,
-                birthDay: 10,
-                bloodType: "A",
-                dominance: "右利き",
-                b: 83,
-                w: 56,
-                h: 80,
-                hobby: "編み物、卓球",
-                skill: "家事全般",
-                like: "散歩、動物"
-            },
-            {
-                id: 7,
-                greeType: "Dance",
-                theaterType: "Princess",
-                name: "菊池 真",
-                nameRead: "きくち まこと",
-                acter: "平田 宏美",
-                acterRead: "ひらた ひろみ",
-                imageColor: "#515558",
-                age: 17,
-                height: 159,
-                weight: 44,
-                birthPlace: "静岡県",
-                birthMonth: 8,
-                birthDay: 29,
-                bloodType: "O",
-                dominance: "右利き",
-                b: 75,
-                w: 57,
-                h: 78,
-                hobby: "スポーツ全般",
-                skill: "空手、ダンス",
-                like: "ぬいぐるみ"
-            },
-            {
-                id: 8,
-                greeType: "Dance",
-                theaterType: "Angel",
-                name: "高槻 やよい",
-                nameRead: "たかつき やよい",
-                acter: "仁後 真耶子",
-                acterRead: "にご まやこ",
-                imageColor: "#f39939",
-                age: 14,
-                height: 145,
-                weight: 37,
-                birthPlace: "埼玉県",
-                birthMonth: 3,
-                birthDay: 25,
-                bloodType: "O",
-                dominance: "右利き",
-                b: 74,
-                w: 54,
-                h: 78,
-                hobby: "オセロ、野球",
-                skill: "節約、家庭菜園",
-                like: "家族"
-            },
-            {
-                id: 9,
-                greeType: "Visual",
-                theaterType: "Fairy",
-                name: "秋月 律子",
-                nameRead: "あきづき りつこ",
-                acter: "若林 直美",
-                acterRead: "わかばやし なおみ",
-                imageColor: "#01a860",
-                age: 19,
-                height: 156,
-                weight: 43,
-                birthPlace: "東京都",
-                birthMonth: 6,
-                birthDay: 23,
-                bloodType: "A",
-                dominance: "右利き",
-                b: 85,
-                w: 57,
-                h: 85,
-                hobby: "資格取得",
-                skill: "分析・実践",
-                like: "ゲーム、小説"
-            },
-            {
-                id: 10,
-                greeType: "Visual",
-                theaterType: "Princess",
-                name: "萩原 雪歩",
-                nameRead: "はぎわら ゆきほ",
-                acter: "浅倉 杏美",
-                acterRead: "あさくら あずみ",
-                imageColor: "#d3dde9",
-                age: 17,
-                height: 155,
-                weight: 42,
-                birthPlace: "東京都",
-                birthMonth: 12,
-                birthDay: 24,
-                bloodType: "A",
-                dominance: "右利き",
-                b: 81,
-                w: 56,
-                h: 81,
-                hobby: "MY詩集を書くこと",
-                skill: "日本茶をいれること",
-                like: "ブログ"
-            },
-            {
-                id: 11,
-                greeType: "Visual",
-                theaterType: "Angel",
-                name: "双海 亜美",
-                nameRead: "ふたみ あみ",
-                acter: "下田 麻美",
-                acterRead: "しもだ あさみ",
-                imageColor: "#ffe43f",
-                age: 13,
-                height: 158,
-                weight: 42,
-                birthPlace: "東京都",
-                birthMonth: 5,
-                birthDay: 22,
-                bloodType: "B",
-                dominance: "右利き",
-                b: 78,
-                w: 55,
-                h: 77,
-                hobby: "メール、エコ",
-                skill: "モノマネ",
-                like: "遊ぶこと"
-            },
-            {
-                id: 12,
-                greeType: "Visual",
-                theaterType: "Angel",
-                name: "双海 真美",
-                nameRead: "ふたみ まみ",
-                acter: "下田 麻美",
-                acterRead: "しもだ あさみ",
-                imageColor: "#ffe43f",
-                age: 13,
-                height: 158,
-                weight: 42,
-                birthPlace: "東京都",
-                birthMonth: 5,
-                birthDay: 22,
-                bloodType: "B",
-                dominance: "左利き",
-                b: 78,
-                w: 55,
-                h: 77,
-                hobby: "メール、ゲーム",
-                skill: "モノマネ",
-                like: "遊ぶこと"
-            },
-            {
-                id: 13,
-                greeType: "Visual",
-                theaterType: "Angel",
-                name: "星井 美希",
-                nameRead: "ほしい みき",
-                acter: "長谷川 明子",
-                acterRead: "はせがわ あきこ",
-                imageColor: "#b4e04b",
-                age: 15,
-                height: 161,
-                weight: 45,
-                birthPlace: "神奈川県",
-                birthMonth: 11,
-                birthDay: 23,
-                bloodType: "B",
-                dominance: "右利き",
-                b: 86,
-                w: 55,
-                h: 83,
-                hobby: "友達とおしゃべり、ネイルアート",
-                skill: "寝ること",
-                like: "おにぎり、いちごババロア"
-            }
-        ],
-        jsondata: [],
-        errors: [],
+        alldata: null,
         selectJson: '',
         searchGreeType: '',
         searchTheaterType: '',
@@ -406,20 +103,24 @@ export default {
         searchDominance: ''
     }
   },
-  beforeCreate: {
-    init: function() {
-      axios.get("../json/million.json")
-        .then(response => {
-            this.jsondata.push(response.data);
-            //console.log(response);
-        })
-        .catch(error => {
-            this.errors.push(error);
-            //console.log(error);
-        });
-    }
+  mounted() {
+    this.alldata = all;
   },
   computed: {
+    /* eslint-disable */
+    changeJson: function() {
+        switch(this.selectJson) {
+            case '':
+                return this.alldata = all;
+            case 'as':
+                return this.alldata = as;
+            case 'million':
+                return this.alldata = million;
+            case 'shiny':
+                return this.alldata = shiny;
+        }
+    },
+    /* eslint-disable */
     filterGreeType: function() {
         if(!this.searchGreeType == '') {
             return this.alldata.filter(function(el){
