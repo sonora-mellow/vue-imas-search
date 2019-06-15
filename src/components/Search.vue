@@ -36,44 +36,35 @@
             </select>
         </div>
         <div class='json_area'>
-            <div v-if='errored' class='data_box'>
-                <p>DataLoad Error</p>
+            <div v-if='filterdata.length == 0' class='data_box'>
+                <p>該当データはありません</p>
             </div>
-
-            <div v-else>
-                <div v-if="loading">Loading...</div>
-                {{ axiosdata }}
-
-                <div v-if='filterdata.length == 0' class='data_box'>
-                    <p>該当データはありません</p>
-                </div>
-                <div v-else v-for='idol in filterdata' :key='idol.id'>
-                    <IdolList
-                        :key='idol.id'
-                        :id='idol.id'
-                        :greeType='idol.greeType'
-                        :theaterType='idol.theaterType'
-                        :name='idol.name'
-                        :nameRead='idol.nameRead'
-                        :acter='idol.acter'
-                        :acterRead='idol.acterRead'
-                        :imageColor='idol.imageColor'
-                        :age='idol.age'
-                        :height='idol.height'
-                        :weight='idol.weight'
-                        :birthPlace='idol.birthPlace'
-                        :birthMonth='idol.birthMonth'
-                        :birthDay='idol.birthDay'
-                        :bloodType='idol.bloodType'
-                        :dominance='idol.dominance'
-                        :b='idol.b'
-                        :w='idol.w'
-                        :h='idol.h'
-                        :hobby='idol.hobby'
-                        :skill='idol.skill'
-                        :like='idol.like'
-                    ></IdolList>
-                </div>
+            <div v-else v-for='idol in filterdata' :key='idol.id'>
+                <IdolList
+                    :key='idol.id'
+                    :id='idol.id'
+                    :greeType='idol.greeType'
+                    :theaterType='idol.theaterType'
+                    :name='idol.name'
+                    :nameRead='idol.nameRead'
+                    :acter='idol.acter'
+                    :acterRead='idol.acterRead'
+                    :imageColor='idol.imageColor'
+                    :age='idol.age'
+                    :height='idol.height'
+                    :weight='idol.weight'
+                    :birthPlace='idol.birthPlace'
+                    :birthMonth='idol.birthMonth'
+                    :birthDay='idol.birthDay'
+                    :bloodType='idol.bloodType'
+                    :dominance='idol.dominance'
+                    :b='idol.b'
+                    :w='idol.w'
+                    :h='idol.h'
+                    :hobby='idol.hobby'
+                    :skill='idol.skill'
+                    :like='idol.like'
+                ></IdolList>
             </div>
         </div>
     </div>
@@ -84,10 +75,6 @@ import as from '../assets/json/as.json'
 import million from '../assets/json/million.json'
 import shiny from '../assets/json/shiny.json'
 
-// const as = require("../assets/json/as.json").as;
-// const million = require("../assets/json/million.json").million;
-// const shiny = require("../assets/json/shiny.json").shiny;
-
 const _ = require('lodash');
 
 export default {
@@ -97,7 +84,7 @@ export default {
   },
   data: function() {
     return {
-        alldata: null,
+        alldata: '',
         as: as,
         million: million,
         shiny: shiny,
@@ -110,7 +97,7 @@ export default {
     }
   },
   mounted() {
-    this.alldata = as.as;
+    //this.alldata = as.as;
   },
   computed: {
     /* eslint-disable */
